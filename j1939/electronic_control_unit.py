@@ -213,12 +213,12 @@ class ElectronicControlUnit:
         self._notifier = notifier
         for listener in self._listeners:
             self._notifier.add_listener(listener)
-            
+
     def remove_bus(self):
         """Remove the bus from the ECU.
         """
         self._bus = None
-    
+
     def remove_notifier(self):
         """Remove the notifier from the ECU.
         """
@@ -365,7 +365,7 @@ class ElectronicControlUnit:
         # each CA receives all broadcast messages
         for dic in self._subscribers:
             if (dic['dev_adr'] == None) or (dest == ParameterGroupNumber.Address.GLOBAL) or (callable(dic['dev_adr']) and dic['dev_adr'](dest)) or (dest == dic['dev_adr']):
-                dic['cb'](priority, pgn, sa, timestamp, data)
+                dic['cb'](priority, pgn, sa, dest, timestamp, data)  # added 'dest' to allow distinguishing BAM and specific messages
 
     def _is_message_acceptable(self, dest):
         for dic in self._subscribers:
